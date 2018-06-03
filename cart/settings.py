@@ -111,14 +111,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
-PAYPAL_ACCOUNT_ID = 'freire1996-facilitator@gmail.com'
-if DEBUG:
-    DOMAIN_URL = 'http://127.0.0.1:8000'
-else:
-    DOMAIN_URL = 'https://www.onlyodd.co.za'
-
-if DEBUG:
-    # paypal
-    PAYPAL_CLIENT_ID = 'ATBOgSDNGSzTLnZ1GPb0iyA4EMOL0YdOpzKcjwhR54W1Bw6BR3ec2wIu9y4E65TYZ6WmtxaznRCHIahe'
-    PAYPAL_CLIENT_SECRET = 'EEB1vnsmXuQKl0qv42w8EaQjzLh7EAv7xwontOMsC_8Mr1OO5-1dt1dUs-FZCCpwYOf4-B-cyOS6H95_'
