@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table class="table table-hover table-bordered text-center">
+      <tr class="text-center">
+        <th>Date Ordered</th>
+        <th>Reference Code</th>
+        <th>Items</th>
+        <th>Price</th>
+      </tr>
+      {% for order in my_orders %}
+        <tr>
+          <td>{{ order.date_ordered }}</td>
+          <td>{{ order.ref_code }}</td>
+          <td>
+        	{% for item in order.items.all %}
+        		{{ item.product.name }}
+      		{% endfor %}
+      	  </td>
+          <td>R{{ order.get_cart_total }}</td>
+
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan= 4> You have no orders.</td>
+        </tr>
+      {% endfor %}
+
+      <tr>
+        <td colspan=4>
+          <a href="{% url 'products:product-list' %}" class="btn btn-warning pull-left">
+            {% if not order %}Continue Shopping{% else %}Add Items to Cart {% endif %}
+          </a> 
+        </td>
+      </tr>
+    </table>
+
+{% endblock content %}
