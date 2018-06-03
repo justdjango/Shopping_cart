@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import Profile
-from cart.helpers import get_reference_code
 from products.models import Product
 
 from shopping_cart.extras import generate_order_id
