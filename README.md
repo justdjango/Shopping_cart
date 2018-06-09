@@ -2,7 +2,7 @@
 
 A basic shopping cart skeleton for digital products.
 
-[![alt text](https://github.com/justdjango/Shopping_cart/blob/master/cart.png "Logo")](https://justdjango.com)
+[![alt text](https://github.com/justdjango/Shopping_cart/blob/master/static_root/images/cart.png "Logo")](https://justdjango.com)
 
 # Where to find us
 Like us on [Facebook](https://www.facebook.com/justdjangocode/)

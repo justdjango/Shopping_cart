@@ -6,7 +6,7 @@
     {% for object in object_list %}
         <div class="col-sm-3">
             <p>{{ object.name }}</p>
-            <p>Price: R{{ object.price }}</p>
+            <p>Price: ${{ object.price }}</p>
             {% if object in user.profile.ebooks.all %}
             <!-- add a button here to see the product -->
             You own this

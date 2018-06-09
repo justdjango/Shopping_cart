@@ -1,0 +1,15 @@
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<form action="." method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="{{ STRIPE_PUBLISHABLE_KEY }}"
+    data-amount="999"
+    data-name="Justdjango"
+    data-description="Example charge"
+    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+    data-locale="auto">
+  </script>
+</form>
+

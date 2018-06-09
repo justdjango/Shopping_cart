@@ -21,7 +21,6 @@ class Order(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     is_ordered = models.BooleanField(default=False)
     items = models.ManyToManyField(OrderItem)
-    # payment_details = models.ForeignKey(Payment, null=True)
     date_ordered = models.DateTimeField(auto_now=True)
 
     def get_cart_items(self):
@@ -32,3 +31,26 @@ class Order(models.Model):
 
     def __str__(self):
         return '{0} - {1}'.format(self.owner, self.ref_code)
+
+
+class Transaction(models.Model):
+    profile = models.ForeignKey(Profile)
+    token = models.CharField(max_length=120) #braintree or stripe
+    order_id = models.CharField(max_length=120)
+    amount = models.DecimalField(max_digits=100, decimal_places=2)
+    success = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return self.order_id
+
+    class Meta:
+        ordering = ['-timestamp']
+
+
+
+
+
+
+
+        

@@ -5,7 +5,6 @@ from .views import (
     delete_from_cart,
     order_details,
     checkout,
-    process_payment,
     update_transaction_records,
     success
 )
@@ -18,7 +17,6 @@ urlpatterns = [
     url(r'^success/$', success, name='purchase_success'),
     url(r'^item/delete/(?P<item_id>[-\w]+)/$', delete_from_cart, name='delete_item'),
     url(r'^checkout/$', checkout, name='checkout'),
-    url(r'^payment/(?P<order_id>[-\w]+)/$', process_payment, name='process_payment'),
-    url(r'^update-transaction/(?P<order_id>[-\w]+)/$', update_transaction_records,
+    url(r'^update-transaction/(?P<token>[-\w]+)/$', update_transaction_records,
         name='update_records')
 ]

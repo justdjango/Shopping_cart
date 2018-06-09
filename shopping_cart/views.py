@@ -1,5 +1,4 @@
-import datetime
-
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -9,7 +8,12 @@ from accounts.models import Profile
 from products.models import Product
 
 from shopping_cart.extras import generate_order_id
-from shopping_cart.models import OrderItem, Order
+from shopping_cart.models import OrderItem, Order, Transaction
+
+import datetime
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def get_user_pending_order(request):
@@ -46,6 +50,7 @@ def add_to_cart(request, **kwargs):
     messages.info(request, "item added to cart")
     return redirect(reverse('products:product-list'))
 
+
 @login_required()
 def delete_from_cart(request, item_id):
     item_to_delete = OrderItem.objects.filter(pk=item_id)
@@ -67,28 +72,40 @@ def order_details(request, **kwargs):
 @login_required()
 def checkout(request):
     existing_order = get_user_pending_order(request)
+    publishKey = settings.STRIPE_PUBLISHABLE_KEY
+    if request.method == 'POST':
+        try:
+            token = request.POST['stripeToken']
+
+            charge = stripe.Charge.create(
+                amount=100*existing_order.get_cart_total(),
+                currency='usd',
+                description='Example charge',
+                source=token,
+            )
+            return redirect(reverse('shopping_cart:update_records',
+                        kwargs={
+                            'token': token
+                        })
+                    )
+
+        except stripe.CardError as e:
+            message.info(request, "Your card has been declined.")
+            
     context = {
         'order': existing_order,
+        'STRIPE_PUBLISHABLE_KEY': publishKey
     }
+
     return render(request, 'shopping_cart/checkout.html', context)
 
 
 @login_required()
-def process_payment(request, order_id):
-    # process the payment
-    return redirect(reverse('shopping_cart:update_records',
-                    kwargs={
-                        'order_id': order_id,
-                    })
-                )
-
-
-@login_required()
-def update_transaction_records(request, order_id):
+def update_transaction_records(request, token):
     # get the order being processed
-    order_to_purchase = Order.objects.filter(pk=order_id).first()
+    order_to_purchase = get_user_pending_order(request)
 
-    # update placed order
+    # update the placed order
     order_to_purchase.is_ordered=True
     order_to_purchase.date_ordered=datetime.datetime.now()
     order_to_purchase.save()
@@ -106,10 +123,20 @@ def update_transaction_records(request, order_id):
     user_profile.ebooks.add(*order_products)
     user_profile.save()
 
-    #====== TODO: Update Payment records ========
+    
+    # create a transaction
+    transaction = Transaction(profile=request.user.profile,
+                            token=token,
+                            order_id=order_to_purchase.id,
+                            amount=order_to_purchase.get_cart_total(),
+                            success=True)
+    # save the transcation (otherwise doesn't exist)
+    transaction.save()
+
 
     # send an email to the customer
-    messages.info(request, "Thank you! Your items have been added to your profile")
+    # look at tutorial on how to send emails with sendgrid
+    messages.info(request, "Thank you! Your purchase was successful!")
     return redirect(reverse('accounts:my_profile'))
 
 
