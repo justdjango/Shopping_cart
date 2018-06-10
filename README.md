@@ -1,5 +1,3 @@
-# Django Shopping Cart
-
 A basic shopping cart for digital products using Stripe payments.
 
 [![alt text](https://github.com/justdjango/Shopping_cart/blob/master/static_root/images/cart.png "Logo")](https://justdjango.com)
