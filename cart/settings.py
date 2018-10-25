@@ -140,12 +140,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
 
 
-# Stripe Settings
+# Stripe and Braintree Settings
 
 if DEBUG:
     # test keys
     STRIPE_PUBLISHABLE_KEY = ''
     STRIPE_SECRET_KEY = ''
+    BT_ENVIRONMENT='sandbox'
+    BT_MERCHANT_ID=''
+    BT_PUBLIC_KEY=''
+    BT_PRIVATE_KEY=''
 else:
     # live keys
     STRIPE_PUBLISHABLE_KEY = 'YOUR STRIPE LIVE PUB KEY'
