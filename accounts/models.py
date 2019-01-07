@@ -19,9 +19,6 @@ class Profile(models.Model):
 
 
 def post_save_profile_create(sender, instance, created, *args, **kwargs):
-    if created:
-        Profile.objects.get_or_create(user=instance)
-
     user_profile, created = Profile.objects.get_or_create(user=instance)
 
     if user_profile.stripe_id is None or user_profile.stripe_id == '':
