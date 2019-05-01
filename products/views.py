@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
 from shopping_cart.models import Order
 from .models import Product
 
-
+@login_required
 def product_list(request):
     object_list = Product.objects.all()
     filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
